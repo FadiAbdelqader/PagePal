@@ -46,19 +46,3 @@ plt.ylim(0, 5)  # Limit the y-axis range to better highlight differences
 plt.xlim(2000, 2020)  # Limit the range of years displayed
 plt.tight_layout()
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
