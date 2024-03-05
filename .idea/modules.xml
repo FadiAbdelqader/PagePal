@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/pagepalfront.iml" filepath="$PROJECT_DIR$/pagepalfront.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pagepalPython/pagepalPython.iml" filepath="$PROJECT_DIR$/pagepalPython/pagepalPython.iml" />
     </modules>
   </component>
 </project>
