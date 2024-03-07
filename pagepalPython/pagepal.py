@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv('books.csv')
+df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/books.csv')
 
 # Drop rows with missing values in the 'categories' and 'average_rating' columns
 df.dropna(subset=['categories', 'average_rating'], inplace=True)
@@ -45,4 +45,4 @@ plt.grid(axis='y')
 plt.ylim(0, 5)  # Limit the y-axis range to better highlight differences
 plt.xlim(2000, 2020)  # Limit the range of years displayed
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/graph.png') # Update '/path/to/your/directory/' to the actual path where you want to save the image
