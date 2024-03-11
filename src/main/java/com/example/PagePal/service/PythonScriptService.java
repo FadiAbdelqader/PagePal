@@ -4,8 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,5 +60,82 @@ public class PythonScriptService {
         }
     }
 
+    public ResponseEntity<byte[]> getStatisticsByUser(Integer userId) {
+        try {
+            String pythonScriptPath = "/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/TopCategoriesPerUser.py";
+            String imagesPath = "/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/dynamic/";
+
+            // Exécutez le script Python
+            ProcessBuilder processBuilder = new ProcessBuilder("python3", pythonScriptPath, userId.toString());
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                // Créer un fichier ZIP en mémoire
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ZipOutputStream zos = new ZipOutputStream(baos);
+
+                // Ajouter chaque image au ZIP
+                for (String fileName : new String[]{"topCategories.png", "userRating.png"}) {
+                    Path filePath = Paths.get(imagesPath + fileName);
+                    ZipEntry zipEntry = new ZipEntry(fileName);
+                    zos.putNextEntry(zipEntry);
+                    zos.write(Files.readAllBytes(filePath));
+                    zos.closeEntry();
+                }
+
+                zos.close();
+
+                byte[] zipBytes = baos.toByteArray();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.setContentDispositionFormData("filename", "statistics.zip");
+
+                return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
+            } else {
+                String errorMessage = IOUtils.toString(process.getErrorStream(), StandardCharsets.UTF_8);
+                System.out.println("Error executing the python script: " + errorMessage);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    public String getBookInfos(String bookTitle) {
+        try {
+            // Chemin vers votre script Python
+            String pythonScriptPath = "/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/BookInfos.py";
+
+            // Construire la commande à exécuter
+            ProcessBuilder processBuilder = new ProcessBuilder("python3", pythonScriptPath, bookTitle);
+
+            // Démarrer le processus
+            Process process = processBuilder.start();
+
+            // Lire la sortie du script
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+
+            // Attendre que le script soit terminé
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                // Le script s'est exécuté avec succès, retourner la sortie du script
+                return output.toString().trim();
+            } else {
+                // Il y a eu une erreur lors de l'exécution du script
+                return "Une erreur est survenue lors de l'exécution du script Python.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Une erreur est survenue lors de l'exécution du script Python.";
+        }
+    }
+}
 
