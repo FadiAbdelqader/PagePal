@@ -2,9 +2,10 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 def plot_user_ratings(user_id):
-    books_df = pd.read_csv('Books.csv')
-    ratings_df = pd.read_csv('Ratings.csv')
+    books_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Books.csv')
+    ratings_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Ratings.csv')
     merged_df = pd.merge(books_df, ratings_df, on='ISBN')
     user_ratings = merged_df[merged_df['User-ID'] == user_id]
     category_counts = user_ratings['category'].value_counts()
@@ -23,7 +24,7 @@ def plot_user_ratings(user_id):
     plt.legend()
     plt.grid(axis='y')
     plt.tight_layout()
-    plt.show()
+    plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/dynamic/userRating.png')
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

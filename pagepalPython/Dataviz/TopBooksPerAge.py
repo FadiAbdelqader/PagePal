@@ -1,9 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-books_df = pd.read_csv('Books.csv')
-users_df = pd.read_csv('Users.csv')
-ratings_df = pd.read_csv('Ratings.csv')
+books_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Books.csv')
+users_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Users.csv')
+ratings_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Ratings.csv')
 merged_df = pd.merge(ratings_df, users_df, on='User-ID', how='left')
 merged_df = pd.merge(merged_df, books_df, on='ISBN', how='left')
 top_categories = merged_df[merged_df['categories'] != 'FICTION']['categories'].value_counts().nlargest(10).index
@@ -20,4 +20,4 @@ plt.ylabel('Number de notes')
 plt.xticks(rotation=45, ha='right')
 plt.legend(title='Catégories', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/dynamic/topBooksPerAge.png')

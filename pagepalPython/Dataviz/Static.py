@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Top reviewers
-ratings_df = pd.read_csv('Ratings.csv')
+ratings_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Ratings.csv')
 user_ratings_count = ratings_df['User-ID'].value_counts()
 top_reviewers = user_ratings_count.head(5)
 colors = ['gold', 'silver', 'darkorange', 'lightgray', 'lightgray']
@@ -11,12 +11,12 @@ plt.bar(top_reviewers.index.astype(str), top_reviewers.values, color=colors)
 plt.xlabel('User ID')
 plt.ylabel('Nombre de reviews')
 plt.title('Top 5 reviewers')
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/static/topReviewers.png')
 
 # Top categories per year range
-books_df = pd.read_csv('Books.csv')
-users_df = pd.read_csv('Users.csv')
-ratings_df = pd.read_csv('Ratings.csv')
+books_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Books.csv')
+users_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Users.csv')
+ratings_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Ratings.csv')
 merged_df = pd.merge(ratings_df, users_df, on='User-ID', how='left')
 merged_df = pd.merge(merged_df, books_df, on='ISBN', how='left')
 top_categories = merged_df[merged_df['categories'] != 'FICTION']['categories'].value_counts().nlargest(10).index
@@ -33,11 +33,11 @@ plt.ylabel('Number de notes')
 plt.xticks(rotation=45, ha='right')
 plt.legend(title='Catégories', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/static/topCategoriesPerYear.png')
 
 
 # Categories publication evolution
-df = pd.read_csv('Books.csv')
+df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Books.csv')
 grouped = df.groupby(['Year-Of-Publication', 'category']).size().unstack(fill_value=0)
 category_totals = grouped.sum(axis=0)
 top_categories = category_totals.nlargest(10).index
@@ -48,10 +48,10 @@ plt.xlabel('Années de publication')
 plt.ylabel('Nombre de livres')
 plt.legend(title='Catégories', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/static/publicationEvolution.png')
 
 # Top countries
-users_df = pd.read_csv('Users.csv')
+users_df = pd.read_csv('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Users.csv')
 ratings_df = pd.read_csv('FULLRatings.csv')
 merged_df = pd.merge(ratings_df, users_df, on='User-ID', how='inner')
 merged_df['Country'] = merged_df['Location'].str.split(',').str[-1].str.strip()
@@ -64,4 +64,4 @@ plt.title('Top 10 Countries with Most Reviews')
 plt.xticks(rotation=45)
 plt.grid(axis='y')
 plt.tight_layout()
-plt.show()
+plt.savefig('/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/images/static/topCountries.png')
