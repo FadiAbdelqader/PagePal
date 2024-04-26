@@ -33,4 +33,9 @@ public class PythonScriptController {
         return ResponseEntity.ok(pythonScriptService.getBookInfos(bookTitle));
     }
 
+    @GetMapping("/recommendations")
+    public ResponseEntity<String> getBookRecommendations(@RequestParam String bookTitle) {
+        return ResponseEntity.ok(pythonScriptService.getRecommendation(bookTitle));
+    }
+
 }

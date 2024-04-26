@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -135,6 +136,45 @@ public class PythonScriptService {
         } catch (Exception e) {
             e.printStackTrace();
             return "Une erreur est survenue lors de l'exécution du script Python.";
+        }
+    }
+
+    public String getRecommendation(String bookTitle) {
+        try {
+            // Chemin vers l'interpréteur Python de l'environnement virtuel
+            String pythonExecutablePath = "/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/monenv/bin/python3";
+            // Chemin vers votre script Python
+            String pythonScriptPath = "/Users/ethan.riahi/Documents/Github/PagePal/pagepalPython/Dataviz/Clustering.py";
+
+            // Construire la commande à exécuter avec l'interpréteur de l'environnement virtuel
+            ProcessBuilder processBuilder = new ProcessBuilder(pythonExecutablePath, pythonScriptPath, bookTitle);
+            Process process = processBuilder.start();
+
+            // Lire la sortie du script
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+
+            String errorLine;
+            StringBuilder errorOutput = new StringBuilder();
+            while ((errorLine = errorReader.readLine()) != null) {
+                errorOutput.append(errorLine).append("\n");
+            }
+
+            // Attendre que le script soit terminé
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                return output.toString().trim();
+            } else {
+                return "Erreur d'exécution du script Python: " + errorOutput.toString().trim();
+            }
+        } catch (Exception e) {
+            return "Exception lors de l'exécution du script Python: " + e.getMessage();
         }
     }
 }
