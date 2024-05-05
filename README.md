@@ -10,10 +10,13 @@ Find a book based on what you like and what you like
 PagePal est un projet destiné à toute personne cherchant un livre à lire qui correspond à ses goûts. L’objectif est de trouver un livre qui les intéressera et qui les intéressera à lire davantage.
 Nous proposons pour le moment deux features basées sur du ML :
 - Trouvez un livre basé sur ce que vous et vos semblable avez aimé
+
   Cette feature à pour but de recommander des livres similaires à celui spécifié par l'utilisateur. Nous souhaitons aider les utilisateurs à découvrir de nouveaux livres qui pourraient leur plaire, en se basant sur les préférences de lecteurs similaires.
+
 - PageBot
+
   Cette feature permet aux utilisateurs de découvrir des livres en fournissant des mots-clés. Elle vise à faciliter la recherche de livres en suggérant des options pertinentes en fonction des préférences spécifiques des utilisateurs qui n’ont pas l’habitude de lire.
 
 
 
-- Fadi & Ethan <3
+Fadi & Ethan <3
